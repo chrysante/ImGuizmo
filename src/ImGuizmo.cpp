@@ -591,90 +591,88 @@ namespace ImGuizmo
 
    struct ContextEx
    {
-	  ContextEx() : mbUsing(false), mbEnable(true), mbUsingBounds(false)
-	  {
-	  }
+	   ContextEx() : mbUsing(false), mbEnable(true), mbUsingBounds(false)
+	   {
+	   }
 
-	  ImDrawList* mDrawList;
+	   ImDrawList* mDrawList;
 
-	  MODE mMode;
-	  matrix_t mViewMat;
-	  matrix_t mProjectionMat;
-	  matrix_t mModel;
-	  matrix_t mModelInverse;
-	  matrix_t mModelSource;
-	  matrix_t mModelSourceInverse;
-	  matrix_t mMVP;
-	  matrix_t mViewProjection;
+       MODE mMode{};
+       matrix_t mViewMat{};
+       matrix_t mProjectionMat{};
+       matrix_t mModel{};
+       matrix_t mModelInverse{};
+       matrix_t mModelSource{};
+       matrix_t mModelSourceInverse{};
+       matrix_t mMVP{};
+       matrix_t mViewProjection{};
 
-	  vec_t mModelScaleOrigin;
-	  vec_t mCameraEye;
-	  vec_t mCameraRight;
-	  vec_t mCameraDir;
-	  vec_t mCameraUp;
-	  vec_t mRayOrigin;
-	  vec_t mRayVector;
+       vec_t mModelScaleOrigin{};
+       vec_t mCameraEye{};
+       vec_t mCameraRight{};
+       vec_t mCameraDir{};
+       vec_t mCameraUp{};
+       vec_t mRayOrigin{};
+       vec_t mRayVector{};
 
-	  float  mRadiusSquareCenter;
-	  ImVec2 mScreenSquareCenter;
-	  ImVec2 mScreenSquareMin;
-	  ImVec2 mScreenSquareMax;
+       float  mRadiusSquareCenter{};
+       ImVec2 mScreenSquareCenter{};
+       ImVec2 mScreenSquareMin{};
+       ImVec2 mScreenSquareMax{};
 
-	  float mScreenFactor;
-	  vec_t mRelativeOrigin;
+       float mScreenFactor{};
+       vec_t mRelativeOrigin{};
 
-	  bool mbUsing;
-	  bool mbEnable;
+       bool mbUsing{};
+       bool mbEnable{};
 
-	  // translation
-	  vec_t mTranslationPlan;
-	  vec_t mTranslationPlanOrigin;
-	  vec_t mMatrixOrigin;
-	  vec_t mTranslationLastDelta;
+	   // translation
+       vec_t mTranslationPlan{};
+       vec_t mTranslationPlanOrigin{};
+       vec_t mMatrixOrigin{};
+       vec_t mTranslationLastDelta{};
 
-	  // rotation
-	  vec_t mRotationVectorSource;
-	  float mRotationAngle;
-	  float mRotationAngleOrigin;
-	  //vec_t mWorldToLocalAxis;
+	   // rotation
+       vec_t mRotationVectorSource{};
+       float mRotationAngle{};
+       float mRotationAngleOrigin{};
 
-	  // scale
-	  vec_t mScale;
-	  vec_t mScaleValueOrigin;
-	  vec_t mScaleLast;
-	  float mSaveMousePosx;
+	   // scale
+       vec_t mScale{};
+       vec_t mScaleValueOrigin{};
+       vec_t mScaleLast{};
+       float mSaveMousePosx{};
 
-	  // save axis factor when using gizmo
-	  bool mBelowAxisLimit[3];
-	  bool mBelowPlaneLimit[3];
-	  float mAxisFactor[3];
+	   // save axis factor when using gizmo
+       bool mBelowAxisLimit[3]{};
+       bool mBelowPlaneLimit[3]{};
+       float mAxisFactor[3]{};
 
-	  // bounds stretching
-	  vec_t mBoundsPivot;
-	  vec_t mBoundsAnchor;
-	  vec_t mBoundsPlan;
-	  vec_t mBoundsLocalPivot;
-	  int mBoundsBestAxis;
-	  int mBoundsAxis[2];
-	  bool mbUsingBounds;
-	  matrix_t mBoundsMatrix;
+ 	   // bounds stretching
+       vec_t mBoundsPivot{};
+       vec_t mBoundsAnchor{};
+       vec_t mBoundsPlan{};
+       vec_t mBoundsLocalPivot{};
+       int mBoundsBestAxis{};
+       int mBoundsAxis[2]{};
+       bool mbUsingBounds{};
+       matrix_t mBoundsMatrix{};
 
-	  //
-	  int mCurrentOperation;
+       int mCurrentOperation{};
 
-	  float mX = 0.f;
-	  float mY = 0.f;
-	  float mWidth = 0.f;
-	  float mHeight = 0.f;
-	  float mXMax = 0.f;
-	  float mYMax = 0.f;
-	  float mDisplayRatio = 1.f;
+       float mX = 0.f;
+       float mY = 0.f;
+       float mWidth = 0.f;
+       float mHeight = 0.f;
+       float mXMax = 0.f;
+       float mYMax = 0.f;
+       float mDisplayRatio = 1.f;
 
-	  bool mIsOrthographic = false;
+       bool mIsOrthographic = false;
 
-	  int mActualID = -1;
-	  int mEditingID = -1;
-	  OPERATION mOperation = OPERATION(-1);
+       int mActualID = -1;
+       int mEditingID = -1;
+       OPERATION mOperation = OPERATION(-1);
    };
 
 	static ContextEx* gContext = nullptr;
