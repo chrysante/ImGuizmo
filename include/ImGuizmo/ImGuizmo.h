@@ -113,9 +113,10 @@ namespace ImGuizmo
 	// translation is applied in world space
 	enum OPERATION
 	{
-		TRANSLATE = 0,
-		ROTATE    = 1,
-		SCALE     = 2,
+        INVALID_OPERATION = -1,
+		TRANSLATE         = 0,
+		ROTATE            = 1,
+		SCALE             = 2,
 		BOUNDS,
 	};
 

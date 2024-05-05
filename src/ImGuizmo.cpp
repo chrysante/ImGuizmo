@@ -672,7 +672,7 @@ namespace ImGuizmo
 
        int mActualID = -1;
        int mEditingID = -1;
-       OPERATION mOperation = OPERATION(-1);
+       OPERATION mOperation = INVALID_OPERATION;
    };
 
 	static ContextEx* gContext = nullptr;
@@ -983,7 +983,7 @@ namespace ImGuizmo
 			   colors[i + 1] = (type == (int)(SCALE_X + i)) ? selectionColor : directionColor[i];
 			}
 			break;
-		 case BOUNDS:
+		 default:
 			break;
 		 }
 	  }
@@ -1459,7 +1459,7 @@ namespace ImGuizmo
 			   case TRANSLATE: type = GetMoveType(&gizmoHitProportion); break;
 			   case ROTATE: type = GetRotateType(); break;
 			   case SCALE: type = GetScaleType(); break;
-			   case BOUNDS: break;
+			   default: break;
 			}
 			if (type != NONE)
 			{
@@ -2118,7 +2118,7 @@ namespace ImGuizmo
 			case SCALE:
 			   manipulated = HandleScale(matrix, deltaMatrix, type, snap);
 			   break;
-			case BOUNDS:
+			default:
 			   break;
 			}
 		 }
@@ -2143,7 +2143,7 @@ namespace ImGuizmo
 		 case SCALE:
 			DrawScaleGizmo(type);
 			break;
-		 case BOUNDS:
+		 default:
 			break;
 		 }
 	  }
