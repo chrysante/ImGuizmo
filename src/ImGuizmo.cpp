@@ -872,21 +872,30 @@ namespace ImGuizmo
 	  return gContext->mbUsing || gContext->mbUsingBounds;
    }
 
+   static bool CanHover()
+   {
+      auto& g = *GImGui;
+      return ImGui::IsWindowHovered(ImGuiHoveredFlags_AllowWhenBlockedByActiveItem) && !g.DragDropActive;
+   }
+
    bool IsOver()
    {
+      if (!CanHover())
+         return false;
 	  return (gContext->mOperation == TRANSLATE && GetMoveType(NULL) != NONE) ||
 		 (gContext->mOperation == ROTATE && GetRotateType() != NONE) ||
 		 (gContext->mOperation == SCALE && GetScaleType() != NONE) || IsUsing();
    }
 
    bool IsOver(OPERATION op) {
+      if (!CanHover())
+         return false;
 	  switch (op) {
 	  case SCALE:       return GetScaleType()      != NONE || IsUsing();
 	  case ROTATE:      return GetRotateType()     != NONE || IsUsing();
 	  case TRANSLATE:   return GetMoveType(NULL)   != NONE || IsUsing();
-	  default: break;
+      default: return false;
 	  }
-	  return false;
    }
 
    void Enable(bool enable)
@@ -1328,12 +1337,8 @@ namespace ImGuizmo
 
    static bool CanActivate()
    {
-	  // TODO: Check for key modifiers
-	  if (ImGui::IsMouseClicked(0) && !ImGui::IsAnyItemHovered() && !ImGui::IsAnyItemActive())
-	  {
-		 return true;
-	  }
-	  return false;
+       // TODO: Check for key modifiers
+       return ImGui::IsMouseClicked(0) && IsOver();
    }
 
    static void HandleAndDrawLocalBounds(float* bounds, matrix_t* matrix, float* snapValues, OPERATION operation)
@@ -2085,6 +2090,19 @@ namespace ImGuizmo
    bool Manipulate(const float* view, const float* projection, OPERATION operation, MODE mode, float* matrix, float* deltaMatrix, float* snap, float* localBounds, float* boundsSnap)
    {
 	  ComputeContext(view, projection, matrix, mode);
+      int ID = gContext->mActualID;
+      auto& g = *GImGui;
+      auto* window = ImGui::GetCurrentWindow();
+      ImGui::ItemAdd(ImRect(), ID);
+      if (IsOver())
+      {
+         ImGui::SetHoveredID(ID);
+         if (ImGui::IsMouseClicked(ImGuiMouseButton_Left)) {
+             ImGui::SetActiveID(ID, window);
+             ImGui::SetFocusID(ID, window);
+             ImGui::FocusWindow(window);
+         }
+      }
 
 	  // set delta to identity
 	  if (deltaMatrix)
@@ -2105,7 +2123,7 @@ namespace ImGuizmo
 	  bool manipulated = false;
 	  if (gContext->mbEnable)
 	  {
-		 if (!gContext->mbUsingBounds)
+		 if (!gContext->mbUsingBounds && (ImGui::IsItemActive() || ImGui::IsWindowHovered(ImGuiHoveredFlags_AllowWhenBlockedByActiveItem)))
 		 {
 			switch (operation)
 			{
@@ -2123,7 +2141,12 @@ namespace ImGuizmo
 			}
 		 }
 	  }
-
+      if (g.ActiveId == ID && !g.IO.MouseDown[0]) {
+         ImGui::ClearActiveID();
+      }
+      else if (manipulated) {
+         ImGui::MarkItemEdited(ID);
+      }
 	  if (localBounds && !gContext->mbUsing)
 	  {
 		 HandleAndDrawLocalBounds(localBounds, (matrix_t*)matrix, boundsSnap, operation);
