@@ -22,6 +22,7 @@
 
 #define IMGUI_DEFINE_MATH_OPERATORS
 
+#include <cassert>
 #include "imgui.h"
 #include "imgui_internal.h"
 #include "ImGuizmo/ImGuizmo.h"
@@ -1739,7 +1740,6 @@ namespace ImGuizmo
 	  // move
 	  if (gContext->mbUsing && (gContext->mActualID == -1 || gContext->mActualID == gContext->mEditingID))
 	  {
-		 ImGui::CaptureMouseFromApp();
 		 const float len = fabsf(IntersectRayPlane(gContext->mRayOrigin, gContext->mRayVector, gContext->mTranslationPlan)); // near plan
 		 vec_t newPos = gContext->mRayOrigin + gContext->mRayVector * len;
 
@@ -1807,10 +1807,6 @@ namespace ImGuizmo
 		 // find new possible way to move
 		 vec_t gizmoHitProportion;
 		 type = GetMoveType(&gizmoHitProportion);
-		 if (type != NONE)
-		 {
-			ImGui::CaptureMouseFromApp();
-		 }
 		 if (CanActivate() && type != NONE)
 		 {
 			gContext->mbUsing = true;
@@ -1848,10 +1844,6 @@ namespace ImGuizmo
 	  {
 		 // find new possible way to scale
 		 type = GetScaleType();
-		 if (type != NONE)
-		 {
-			ImGui::CaptureMouseFromApp();
-		 }
 		 if (CanActivate() && type != NONE)
 		 {
 			gContext->mbUsing = true;
@@ -1873,7 +1865,6 @@ namespace ImGuizmo
 	  // scale
 	  if (gContext->mbUsing && (gContext->mActualID == -1 || gContext->mActualID == gContext->mEditingID))
 	  {
-		 ImGui::CaptureMouseFromApp();
 		 const float len = IntersectRayPlane(gContext->mRayOrigin, gContext->mRayVector, gContext->mTranslationPlan);
 		 vec_t newPos = gContext->mRayOrigin + gContext->mRayVector * len;
 		 vec_t newOrigin = newPos - gContext->mRelativeOrigin * gContext->mScreenFactor;
@@ -1946,11 +1937,6 @@ namespace ImGuizmo
 	  {
 		 type = GetRotateType();
 
-		 if (type != NONE)
-		 {
-			ImGui::CaptureMouseFromApp();
-		 }
-
 		 if (type == ROTATE_SCREEN)
 		 {
 			applyRotationLocaly = true;
@@ -1982,7 +1968,6 @@ namespace ImGuizmo
 	  // rotation
 	  if (gContext->mbUsing && (gContext->mActualID == -1 || gContext->mActualID == gContext->mEditingID))
 	  {
-		 ImGui::CaptureMouseFromApp();
 		 gContext->mRotationAngle = ComputeAngleOnPlan();
 		 if (snap)
 		 {
